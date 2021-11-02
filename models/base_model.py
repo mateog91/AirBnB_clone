@@ -8,6 +8,7 @@ from datetime import datetime, timezone
 class BaseModel:
     """Defines all common attributes/methods for other classes
     """
+
     def __init__(self):
         """Constructor
         """
@@ -18,7 +19,8 @@ class BaseModel:
     def __str__(self):
         """Returns [<class name>] (<self.id>) <self.__dict__>
         """
-        return "[{}] ({}) {}".format(__class__.__name__, self.id, self.__dict__)
+        return "[{}] ({}) {}".format(__class__.__name__, self.id,
+                                     self.__dict__)
 
     def save(self):
         """Updates the public instance attribute
