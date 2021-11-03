@@ -24,7 +24,7 @@ class BaseModel:
                     setattr(self, key, datetime.fromisoformat(value))
                 else:
                     setattr(self, key, value)
-    
+
     def __str__(self):
         """Returns [<class name>] (<self.id>) <self.__dict__>
         """
