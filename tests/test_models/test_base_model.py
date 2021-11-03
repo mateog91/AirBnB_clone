@@ -125,4 +125,4 @@ class TestBaseModel(unittest.TestCase):
             my_new_model.__class__.__name__, BaseModel.__name__)
         self.assertEqual(
             my_new_model.__class__.__name__, my_model.__class__.__name__)
-        self.assertEqual(my_model.__dict__, my_new_model.__dict__) 
+        self.assertEqual(my_model.__dict__, my_new_model.__dict__)
