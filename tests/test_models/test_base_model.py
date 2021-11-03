@@ -79,3 +79,19 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsInstance(my_model_json['created_at'], str)
         self.assertIsInstance(my_model_json['updated_at'], str)
         self.assertIsInstance(my_model_json, dict)
+
+    def test_create_from_dict(self):
+        """Test cases when creating an object from a
+            a dictionary representation (**kwargs)
+        """
+        my_model = BaseModel()
+        my_model_json = my_model.to_dict()
+        my_new_model = BaseModel(**my_model_json)
+
+        self.assertEqual(my_model.id, my_new_model.id)
+        self.assertEqual(
+            my_new_model.__class__.__name__, BaseModel.__name__)
+
+        # _out=with unittest.mock.patch('sys.stdout', new=io.StringIO()) as _out:
+        #     print(my_model, end="")
+        #     self.assertEqual(_out.getvalue(), output)
