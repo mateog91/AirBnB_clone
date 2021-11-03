@@ -61,19 +61,51 @@ class TestBaseModel(unittest.TestCase):
         # since it was updated, create at must not be equal to update at
         self.assertNotEqual(my_model.created_at, my_model.updated_at)
 
-    def test_to_dict(self):
-        """Tests to dict method
+    def test_to_dict_NoArguments(self):
+        """Tests to dict method without arguments passed
         """
         # creating instance for testing
         my_model = BaseModel()
         my_model.name = "My First Model"
         # calling to_dict method to test it
         my_model_json = my_model.to_dict()
-        dictionary = my_model.__dict__
-        # Test if they are the same
-        self.assertEqual(my_model_json, dictionary)
         # Testing if all steps of to_dict method did their job correctly
         self.assertIn('__class__', my_model_json)
+        self.assertNotIn('__class__', my_model.__dict__)
+        self.assertEqual(my_model.__class__.__name__,
+                         my_model_json['__class__'])
+        self.assertIsInstance(my_model_json['created_at'], str)
+        self.assertIsInstance(my_model_json['updated_at'], str)
+        self.assertIsInstance(my_model_json, dict)
+
+    def test_to_dict_emptyDict(self):
+        """Tests to dict method empty dict passed
+        """
+        # creating instance for testing
+        my_model = BaseModel({})
+        my_model.name = "My First Model"
+        # calling to_dict method to test it
+        my_model_json = my_model.to_dict()
+        # Testing if all steps of to_dict method did their job correctly
+        self.assertIn('__class__', my_model_json)
+        self.assertNotIn('__class__', my_model.__dict__)
+        self.assertEqual(my_model.__class__.__name__,
+                         my_model_json['__class__'])
+        self.assertIsInstance(my_model_json['created_at'], str)
+        self.assertIsInstance(my_model_json['updated_at'], str)
+        self.assertIsInstance(my_model_json, dict)
+
+    def test_to_dict_None(self):
+        """Tests to dict method None passed
+        """
+        # creating instance for testing
+        my_model = BaseModel(None)
+        my_model.name = "My First Model"
+        # calling to_dict method to test it
+        my_model_json = my_model.to_dict()
+        # Testing if all steps of to_dict method did their job correctly
+        self.assertIn('__class__', my_model_json)
+        self.assertNotIn('__class__', my_model.__dict__)
         self.assertEqual(my_model.__class__.__name__,
                          my_model_json['__class__'])
         self.assertIsInstance(my_model_json['created_at'], str)
@@ -91,7 +123,6 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(my_model.id, my_new_model.id)
         self.assertEqual(
             my_new_model.__class__.__name__, BaseModel.__name__)
-
-        # _out=with unittest.mock.patch('sys.stdout', new=io.StringIO()) as _out:
-        #     print(my_model, end="")
-        #     self.assertEqual(_out.getvalue(), output)
+        self.assertEqual(
+            my_new_model.__class__.__name__, my_model.__class__.__name__)
+        self.assertEqual(my_model.__dict__, my_new_model.__dict__)
