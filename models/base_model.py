@@ -12,7 +12,11 @@ class BaseModel:
     def __init__(self, *args, **kwargs):
         """Constructor
         """
-        if kwargs != {}:
+        if not kwargs:
+            self.id = str(uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
+        else:
             for key, value in kwargs.items():
                 if key == '__class__':
                     continue
@@ -20,15 +24,11 @@ class BaseModel:
                     setattr(self, key, datetime.fromisoformat(value))
                 else:
                     setattr(self, key, value)
-        else:
-            self.id = str(uuid4())
-            self.created_at = datetime.now()
-            self.updated_at = datetime.now()
-
+    
     def __str__(self):
         """Returns [<class name>] (<self.id>) <self.__dict__>
         """
-        return "[{}] ({}) {}".format(__class__.__name__, self.id,
+        return "[{}] ({}) {}".format(self.__class__.__name__, self.id,
                                      self.__dict__)
 
     def save(self):
@@ -41,8 +41,8 @@ class BaseModel:
         """Returns a dictionary containing all
         keys/values of __dict__ of the instance
         """
-        dictionary = self.__dict__
-        dictionary['__class__'] = __class__.__name__
+        dictionary = dict(self.__dict__)
+        dictionary['__class__'] = self.__class__.__name__
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
         return dictionary
