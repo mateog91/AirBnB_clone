@@ -2,19 +2,28 @@
 """Defines all common attributes/methods for other classes
 """
 from uuid import uuid4
-from datetime import datetime, timezone
+from datetime import datetime
 
 
 class BaseModel:
     """Defines all common attributes/methods for other classes
     """
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """Constructor
         """
-        self.id = str(uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
+        if kwargs != {}:
+            for key, value in kwargs.items():
+                if key == '__class__':
+                    continue
+                if key in ['created_at', 'updated_at']:
+                    setattr(self, key, datetime.fromisoformat(value))
+                else:
+                    setattr(self, key, value)
+        else:
+            self.id = str(uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
 
     def __str__(self):
         """Returns [<class name>] (<self.id>) <self.__dict__>
