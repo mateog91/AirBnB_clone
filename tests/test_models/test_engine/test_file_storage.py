@@ -3,12 +3,17 @@
 """
 import pycodestyle
 import unittest
+from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
+from models import storage
+import os
+import json
 
 
 class TestFileStorage(unittest.TestCase):
     """Class to test File Storage
     """
+
     def test_pycodestyle(self):
         """Test pycodestyle"""
         style = pycodestyle.StyleGuide(quiet=True)
@@ -16,32 +21,77 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(result.total_errors, 0,
                          "Found code style errors (and warnings).")
 
-    def type_field(self):
+    def test_type_field(self):
         """Test type of field
         """
         object = FileStorage()
-        self.assertEqual(type(object), FileStorage)
-        self.assertEqual(type(object.__file_path, str))
-        self.assertEqual(type(object.__objects, dict))
+        self.assertIsInstance(object, FileStorage)
+        self.assertIsInstance(object._FileStorage__file_path, str)
+        self.assertIsInstance(object._FileStorage__objects, dict)
 
     def test_all(self):
         """Test all method
         """
         object = FileStorage()
         all_objs = object.all()
-        self.assertEqual(dict, type(all_objs))
-    
+        self.assertIsInstance(all_objs, dict)
+        self.assertIsInstance(storage.all(), dict)
+
     def test_new(self):
         """Test new method
         """
-        object = 
-        
-        for obj_id in all_objs.keys():
-        obj = all_objs[obj_id]
-        print(obj)
+        object = BaseModel()
+        storage.new(object)
+        dict_objects = storage.all()
+
+        # Testing if key was set correctly and in __objects
+        key = f"{object.__class__.__name__}.{object.id}"
+        keys_dict = dict_objects.keys()
+        self.assertIn(key, keys_dict)
+
+        # Testing if value was correctly added to __objects
+        self.assertEqual(dict_objects[key], object)
+
+    def test_save(self):
+        """Test for save method
+        """
+        path = os.getcwd()
+        file_name_expected = 'file.json'
+        try:
+            os.remove(path + "/" + file_name_expected)
+        except FileNotFoundError:
+            pass
 
         my_model = BaseModel()
-        my_model.name = "My_First_Model"
-        my_model.my_number = 89
         my_model.save()
-        print(my_model)
+
+        dummy_dict = my_model.to_dict()
+        dummy_key = f"{my_model.__class__.__name__}.{my_model.id}"
+
+        self.assertTrue(os.path.isfile(path + "/" + file_name_expected))
+        with open(file_name_expected, mode="r") as file:
+            output = file.read()
+        dict_json = eval(output)
+        keys = dict_json.keys()
+        self.assertIn(dummy_key, keys)
+        self.assertEqual(dummy_dict, dict_json[dummy_key])
+
+    def test_reload(self):
+        """Test Reload Method
+        """
+        json_string = '{"BaseModel.e79e744a-55d4-45a3-b74a-ca5fae74e0e2": {"__class__": "BaseModel", "id": "e79e744a-55d4-45a3-b74a-ca5fae74e0e2", "updated_at": "2017-09-28T21:08:06.151750", "created_at": "2017-09-28T21:08:06.151711", "name": "My_First_Model", "my_number": 89}}'
+        expected_dictionary = {"BaseModel.e79e744a-55d4-45a3-b74a-ca5fae74e0e2": {"__class__": "BaseModel", "id": "e79e744a-55d4-45a3-b74a-ca5fae74e0e2",
+                                                                                  "updated_at": "2017-09-28T21:08:06.151750", "created_at": "2017-09-28T21:08:06.151711", "name": "My_First_Model", "my_number": 89}}
+        with open('file.json', mode="w") as file:
+            file.write(json_string)
+
+        storage.reload()
+        dictionary_reload = storage.all()
+
+        key_expected = "BaseModel.e79e744a-55d4-45a3-b74a-ca5fae74e0e2"
+
+        self.assertIn(key_expected, dictionary_reload.keys())
+
+        self.assertEqual(
+            dictionary_reload[key_expected].name,
+            expected_dictionary[key_expected]["name"])
