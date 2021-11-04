@@ -6,6 +6,7 @@ import unittest
 import pycodestyle
 from models.base_model import BaseModel
 import sys
+import os
 import io
 import unittest.mock
 
@@ -60,6 +61,12 @@ class TestBaseModel(unittest.TestCase):
             self.assertEqual(_out.getvalue(), output)
         # since it was updated, create at must not be equal to update at
         self.assertNotEqual(my_model.created_at, my_model.updated_at)
+        path = os.getcwd()
+        file_name_expected = 'file.json'
+        try:
+            os.remove(path + "/" + file_name_expected)
+        except FileNotFoundError:
+            pass
 
     def test_to_dict_NoArguments(self):
         """Tests to dict method without arguments passed

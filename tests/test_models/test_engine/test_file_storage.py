@@ -7,7 +7,6 @@ from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 from models import storage
 import os
-import json
 
 
 class TestFileStorage(unittest.TestCase):
@@ -80,15 +79,21 @@ class TestFileStorage(unittest.TestCase):
     def test_reload(self):
         """Test Reload Method
         """
-        json_string = '{"BaseModel.e79e744a-55d4-45a3-b74a-ca5fae74e0e2": {"__class__": "BaseModel", "id": "e79e744a-55d4-45a3-b74a-ca5fae74e0e2", "updated_at": "2017-09-28T21:08:06.151750", "created_at": "2017-09-28T21:08:06.151711", "name": "My_First_Model", "my_number": 89}}'
-        expected_dictionary = {"BaseModel.e79e744a-55d4-45a3-b74a-ca5fae74e0e2": {"__class__": "BaseModel", "id": "e79e744a-55d4-45a3-b74a-ca5fae74e0e2",
-                                                                                  "updated_at": "2017-09-28T21:08:06.151750", "created_at": "2017-09-28T21:08:06.151711", "name": "My_First_Model", "my_number": 89}}
+        json_string = '{"BaseModel.e79e744a": {"__class__": "BaseModel", \
+            "id": "e79e744a", "updated_at": "2017-09-28T21:08:06.151750", \
+                "created_at": "2017-09-28T21:08:06.151711", \
+                    "name": "My_First_Model", "my_number": 89}}'
+        expected_dictionary = {"BaseModel.e79e744a":
+                               {"__class__": "BaseModel", "id": "e79e744a",
+                                "updated_at": "2017-09-28T21:08:06.151750",
+                                "created_at": "2017-09-28T21:08:06.151711",
+                                "name": "My_First_Model", "my_number": 89}}
         with open('file.json', mode="w") as file:
             file.write(json_string)
 
         storage.reload()
         dictionary_reload = storage.all()
-        key_expected = "BaseModel.e79e744a-55d4-45a3-b74a-ca5fae74e0e2"
+        key_expected = "BaseModel.e79e744a"
         self.assertIn(key_expected, dictionary_reload.keys())
         self.assertEqual(
             dictionary_reload[key_expected].name,
