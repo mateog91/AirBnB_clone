@@ -75,6 +75,7 @@ class TestFileStorage(unittest.TestCase):
         keys = dict_json.keys()
         self.assertIn(dummy_key, keys)
         self.assertEqual(dummy_dict, dict_json[dummy_key])
+        os.remove(path + "/" + file_name_expected)
 
     def test_reload(self):
         """Test Reload Method
@@ -87,11 +88,14 @@ class TestFileStorage(unittest.TestCase):
 
         storage.reload()
         dictionary_reload = storage.all()
-
         key_expected = "BaseModel.e79e744a-55d4-45a3-b74a-ca5fae74e0e2"
-
         self.assertIn(key_expected, dictionary_reload.keys())
-
         self.assertEqual(
             dictionary_reload[key_expected].name,
             expected_dictionary[key_expected]["name"])
+        path = os.getcwd()
+        file_name_expected = 'file.json'
+        try:
+            os.remove(path + "/" + file_name_expected)
+        except FileNotFoundError:
+            pass
