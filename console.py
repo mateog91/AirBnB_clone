@@ -84,7 +84,7 @@ class HBNBCommand(cmd.Cmd):
         try:
             eval(line_list[0])
             return True
-        except:
+        except NameError:
             print("** class doesn't exist **")
             return False
 
