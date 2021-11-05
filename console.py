@@ -41,15 +41,49 @@ class HBNBCommand(cmd.Cmd):
         """ Creates a new instance of BaseModel, saves it (to the JSON file)
             and prints the id.
         """
-        line_list = arg.split()
-        if (len(line_list) <= 0):
-            print("** class name missing **")
+        if not self.input_validation(arg):
+            return
         else:
             try:
+                line_list = arg.split()
                 new_object = eval(line_list[0])()
                 print(new_object.id)
             except NameError:
                 print("** class doesn't exist **")
+
+    def do_show(self, arg):
+        """ Prints the string representation of an instance based on the
+            class name and id.
+        """
+        if not self.input_validation(arg):
+            return
+
+        line_list = arg.split()
+        if len(line_list) < 2:
+            print("** instance id missing **")
+            return
+
+    @staticmethod
+    def input_validation(arg):
+        """Validates Input arguments
+        """
+
+        line_list = arg.split()
+        # Check if any argument is passed
+        if (len(line_list) <= 0):
+            print("** class name missing **")
+            return False
+        # Check if argument is BaseModel
+        if line_list[0] != BaseModel.__name__:
+            print("** class doesn't exist **")
+            return False
+        # Check if argumen is subclass of BaseModel
+        for element in BaseModel.__subclasses__():
+            print(element)
+            if element.__name__() != line_list[0]:
+                print("** class doesn't exist **")
+                return False
+        return True
 
 
 if __name__ == '__main__':
