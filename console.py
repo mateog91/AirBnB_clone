@@ -89,6 +89,7 @@ class HBNBCommand(cmd.Cmd):
     @staticmethod
     def check_id(arg):
         """Check if their is an input id
+        
         Returns:
             [bool]: If input id exists then True, if not False
         """
@@ -101,6 +102,7 @@ class HBNBCommand(cmd.Cmd):
     @staticmethod
     def check_instance(arg):
         """Check if the input id is corresponding of an existing object
+        
         Returns:
         [bool]: If id's object exists then True, if not False
         """
