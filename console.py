@@ -3,6 +3,7 @@
 """
 import cmd
 from models.base_model import BaseModel
+from models.engine.file_storage import FileStorage
 
 
 class HBNBCommand(cmd.Cmd):
@@ -61,6 +62,12 @@ class HBNBCommand(cmd.Cmd):
         line_list = arg.split()
         if len(line_list) < 2:
             print("** instance id missing **")
+            return
+
+        key = line_list[0] + line_list[1]
+        all_objects = FileStorage.all
+        if key not in all_objects:
+            print("** no instance found **")
             return
 
     @staticmethod
