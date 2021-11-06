@@ -32,7 +32,7 @@ class TestBaseModel(unittest.TestCase):
         """
         self.b = BaseModel()
 
-    def test_Instances(self):
+    def test_TypeInstances(self):
         """Test if instances and attributes are correct type
         """
         # Check b is instance of BaseModel
@@ -43,6 +43,13 @@ class TestBaseModel(unittest.TestCase):
         # Check create_at and update_at are strings
         self.assertIsInstance(self.b.created_at, datetime.datetime)
         self.assertIsInstance(self.b.updated_at, datetime.datetime)
+
+    def test_InstancesAttributes(self):
+        """Test if instances have correct attributes
+        """
+        self.assertTrue(hasattr(self.b, "id"))
+        self.assertTrue(hasattr(self.b, "created_at"))
+        self.assertTrue(hasattr(self.b, "updated_at"))
 
     def test_str_method(self):
         """Test __str__ method correct printing
