@@ -72,7 +72,10 @@ class TestBaseModel(unittest.TestCase):
         """Test save method correct printing
         """
         my_model = BaseModel()
+        update_1 = my_model.updated_at
         my_model.save()
+        update_2 = my_model.updated_at
+        self.assertNotEqual(update_1, update_2)
         output = "[{}] ({}) {}".format(my_model.__class__.__name__,
                                        my_model.id, my_model.__dict__)
 
