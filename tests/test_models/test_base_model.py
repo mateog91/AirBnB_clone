@@ -32,6 +32,12 @@ class TestBaseModel(unittest.TestCase):
         """
         self.b = BaseModel()
 
+    def test_unique_id(self):
+        """Test if id of an instance is unique
+        """
+        b2 = BaseModel()
+        self.assertNotEqual(self.b.id, b2.id)
+
     def test_TypeInstances(self):
         """Test if instances and attributes are correct type
         """
