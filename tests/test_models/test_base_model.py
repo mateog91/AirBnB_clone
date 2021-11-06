@@ -23,6 +23,8 @@ class TestBaseModel(unittest.TestCase):
                          "Found code style errors (and warnings).")
 
     def setUp(self):
+        """Creates the instance that can be used in the following tests
+        """
         self.b = BaseModel()
 
     def test_Instances(self):

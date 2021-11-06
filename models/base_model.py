@@ -8,6 +8,21 @@ import models
 
 class BaseModel:
     """Defines all common attributes/methods for other classes
+
+    Attributes:
+        id: string - unique id for each BaseModel, it will be assigned
+        with an uuid when an instance is created
+        created_at: datetime - assigned with the current datetime when
+        an instance is created
+        updated_at: datetime - assigned with the current datetime when an
+        instance is created and it will be updated every time you change your
+        object
+    Methods:
+        __str__: should print: [<class name>] (<self.id>) <self.__dict__>
+        save(self): updates the public instance attribute updated_at with
+        the current datetime
+        to_dict(self): returns a dictionary containing all keys/values of
+        __dict__ of the instance
     """
 
     def __init__(self, *args, **kwargs):
@@ -20,11 +35,9 @@ class BaseModel:
             models.storage.new(self)
         else:
             for key, value in kwargs.items():
-                if key == '__class__':
-                    continue
                 if key in ['created_at', 'updated_at']:
                     setattr(self, key, datetime.fromisoformat(value))
-                else:
+                elif key != '__class__':
                     setattr(self, key, value)
 
     def __str__(self):
