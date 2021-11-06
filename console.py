@@ -3,6 +3,7 @@
 """
 import cmd
 from models.base_model import BaseModel
+from models.user import User
 from models.engine.file_storage import FileStorage
 from models import storage
 
@@ -102,14 +103,16 @@ class HBNBCommand(cmd.Cmd):
             print(list_objects)
         else:
             try:
-                class_name = eval(line_list[0])
-                all_objects = storage.all()
-                list_objects = [str(all_objects[key])
-                                for key in all_objects
-                                if isinstance(all_objects[key], class_name)]
-                print(list_objects)
+                eval(line_list[0])
             except NameError:
                 print("** class doesn't exist **")
+                return
+            class_name = line_list[0]
+            all_objects = storage.all().values()
+            list_objects = [str(value)
+                            for value in all_objects
+                            if value.__class__.__name__ == class_name]
+            print(list_objects)
 
     def do_update(self, arg):
         """Updates an instance based on the class name and id by adding
