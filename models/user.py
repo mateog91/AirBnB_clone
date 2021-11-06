@@ -11,6 +11,11 @@ class User(BaseModel):
     Args:
         BaseModel (superclass): Defines all common
         attributes/methods for other classes
+    Description:
+        email: string - empty string
+        password: string - empty string
+        first_name: string - empty string
+        last_name: string - empty string
     """
     email = ""
     password = ""
