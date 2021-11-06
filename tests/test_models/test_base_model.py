@@ -4,8 +4,8 @@
 import datetime
 import unittest
 import pycodestyle
+import models
 from models.base_model import BaseModel
-import sys
 import os
 import io
 import unittest.mock
@@ -21,6 +21,11 @@ class TestBaseModel(unittest.TestCase):
         result = style.check_files(['models/base_model.py'])
         self.assertEqual(result.total_errors, 0,
                          "Found code style errors (and warnings).")
+
+    def test_Documentation(self):
+        """Test if module user has documentation
+        """
+        self.assertTrue(len(models.user.__doc__) > 0)
 
     def setUp(self):
         """Creates the instance that can be used in the following tests
