@@ -91,6 +91,26 @@ class TestBaseModel(unittest.TestCase):
         except FileNotFoundError:
             pass
 
+    def test_save_FileStorage(self):
+        """Test save method for json file
+        """
+        path = os.getcwd()
+        file_name_expected = 'file.json'
+        try:
+            os.remove(path + "/" + file_name_expected)
+        except FileNotFoundError:
+            pass
+        my_model = BaseModel()
+        my_model.save()
+        key = f"{my_model.__class__.__name__}.{my_model.id}"
+        with open(file_name_expected, mode="r") as file:
+            output = file.read()
+        dict_json = eval(output)
+        json_keys = dict_json.keys()
+        self.assertIn(key, json_keys)
+        self.assertEqual(my_model.to_dict(), dict_json[key])
+        os.remove(path + "/" + file_name_expected)
+
     def test_to_dict_NoArguments(self):
         """Tests to dict method without arguments passed
         """
