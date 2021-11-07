@@ -4,6 +4,7 @@
 import pycodestyle
 import unittest
 import models
+import json
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 from models import storage
@@ -31,6 +32,7 @@ class TestFileStorage(unittest.TestCase):
         """
         object = FileStorage()
         self.assertIsInstance(object, FileStorage)
+        self.assertIsInstance(object.all(), dict)
         self.assertIsInstance(object._FileStorage__file_path, str)
         self.assertIsInstance(object._FileStorage__objects, dict)
 
@@ -94,17 +96,17 @@ class TestFileStorage(unittest.TestCase):
         except FileNotFoundError:
             pass
 
-        json_string = '{"BaseModel.e79e744a": {"__class__": "BaseModel", \
-            "id": "e79e744a", "updated_at": "2017-09-28T21:08:06.151750", \
-                "created_at": "2017-09-28T21:08:06.151711", \
-                    "name": "My_First_Model", "my_number": 89}}'
+        json_string = {"BaseModel.e79e744a": {"__class__": "BaseModel",
+            "id": "e79e744a", "updated_at": "2017-09-28T21:08:06.151750",
+                "created_at": "2017-09-28T21:08:06.151711",
+                    "name": "My_First_Model", "my_number": 89}}
         expected_dictionary = {"BaseModel.e79e744a":
                                {"__class__": "BaseModel", "id": "e79e744a",
                                 "updated_at": "2017-09-28T21:08:06.151750",
                                 "created_at": "2017-09-28T21:08:06.151711",
                                 "name": "My_First_Model", "my_number": 89}}
         with open('file.json', mode="w") as file:
-            file.write(json_string)
+            json.dump(json_string, file)
 
         storage.reload()
         dictionary_reload = storage.all()
@@ -113,9 +115,4 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(
             dictionary_reload[key_expected].name,
             expected_dictionary[key_expected]["name"])
-        path = os.getcwd()
-        file_name_expected = 'file.json'
-        try:
-            os.remove(path + "/" + file_name_expected)
-        except FileNotFoundError:
-            pass
+        os.remove(path + "/" + file_name_expected)
