@@ -11,6 +11,7 @@ from models.place import Place
 from models.review import Review
 from models.engine.file_storage import FileStorage
 from models import storage
+import re
 
 
 class HBNBCommand(cmd.Cmd):
@@ -218,6 +219,21 @@ class HBNBCommand(cmd.Cmd):
             print("** value missing **")
             return False
         return True
+
+# -------------- ADVANCED --------------------
+# Task 11 - All Instances by class name
+
+    def default(self, arg):
+        line = re.split('[.()]+', arg)
+        if len(line) >= 2:
+            command, class_name = line[1], line[0]
+            str_cmd = f"self.do_{command}('{class_name}')"
+            try:
+                eval(str_cmd)
+            except:
+                print(f"*** Unknown syntax: {arg}")
+        else:
+            print(f"*** Unknown syntax: {arg}")
 
 
 if __name__ == '__main__':
