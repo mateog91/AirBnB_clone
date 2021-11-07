@@ -3,6 +3,7 @@
 """
 import pycodestyle
 import unittest
+import models
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 from models import storage
@@ -19,6 +20,11 @@ class TestFileStorage(unittest.TestCase):
         result = style.check_files(['models/engine/file_storage.py'])
         self.assertEqual(result.total_errors, 0,
                          "Found code style errors (and warnings).")
+
+    def test_Documentation(self):
+        """Test if module file_storage has documentation
+        """
+        self.assertTrue(len(models.engine.file_storage.__doc__) > 0)
 
     def test_type_field(self):
         """Test type of field
@@ -79,6 +85,13 @@ class TestFileStorage(unittest.TestCase):
     def test_reload(self):
         """Test Reload Method
         """
+        path = os.getcwd()
+        file_name_expected = 'file.json'
+        try:
+            os.remove(path + "/" + file_name_expected)
+        except FileNotFoundError:
+            pass
+
         json_string = '{"BaseModel.e79e744a": {"__class__": "BaseModel", \
             "id": "e79e744a", "updated_at": "2017-09-28T21:08:06.151750", \
                 "created_at": "2017-09-28T21:08:06.151711", \

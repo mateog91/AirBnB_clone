@@ -23,9 +23,9 @@ class TestBaseModel(unittest.TestCase):
                          "Found code style errors (and warnings).")
 
     def test_Documentation(self):
-        """Test if module user has documentation
+        """Test if module BaseModel has documentation
         """
-        self.assertTrue(len(models.user.__doc__) > 0)
+        self.assertTrue(len(models.base_model.__doc__) > 0)
 
     def setUp(self):
         """Creates the instance that can be used in the following tests
