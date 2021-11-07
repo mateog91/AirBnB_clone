@@ -37,10 +37,12 @@ class TestFileStorage(unittest.TestCase):
     def test_all(self):
         """Test all method
         """
-        object = FileStorage()
-        all_objs = object.all()
+        object = BaseModel()
+        all_objs = storage.all()
         self.assertIsInstance(all_objs, dict)
         self.assertIsInstance(storage.all(), dict)
+        key_object = f"{object.__class__.__name__}.{object.id}"
+        self.assertEqual(all_objs[key_object], object)
 
     def test_new(self):
         """Test new method
