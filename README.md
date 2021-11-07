@@ -186,11 +186,12 @@ $
 
 _With optional argument <clase_name>_
 
+```bash
 $ echo "all Place" | ./console.py
 (hbnb) ["[Place] (8218f493-928a-4267-8826-1f589371a1d8) {'id': '8218f493-928a-4267-8826-1f589371a1d8', 'created_at': datetime.datetime(2021, 11, 7, 13, 56, 36, 401021), 'updated_at': datetime.datetime(2021, 11, 7, 13, 56, 36, 401027)}"]
 (hbnb)
 $
-
+```
 #### update
 
 Interactive Mode:
@@ -252,5 +253,7 @@ This is a purely academic project for Holberton School. It cannot be modified an
 ## Authors
 
 Mateo Garcia - [twitter](https://twitter.com/mateog91) - [linkedin](https://www.linkedin.com/in/mateog91/)
+ 
 Sandra Calero - [twitter](https://twitter.com/SandraC59631923) - [linkedin](https://www.linkedin.com/in/sandra-liliana-calero/)
+ 
 Project for [Holberton School](https://www.holbertonschool.com/)
